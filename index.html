@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#dde8ff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1430" media="(prefers-color-scheme: dark)">
+<title>Asistencia</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%85%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --tinta:#0d1a2e; --tinta-2:rgba(13,26,46,.6);
+  --vidrio:rgba(255,255,255,.26); --vidrio-fuerte:rgba(255,255,255,.5);
+  --borde:rgba(255,255,255,.65); --brillo:rgba(255,255,255,.8);
+  --acento:#0a6cff; --ok:#12a26a; --aviso:#e0610e;
+  --sombra:0 18px 40px rgba(28,45,90,.16);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --tinta:#eef3ff; --tinta-2:rgba(238,243,255,.64);
+    --vidrio:rgba(28,36,58,.36); --vidrio-fuerte:rgba(44,56,88,.55);
+    --borde:rgba(255,255,255,.16); --brillo:rgba(255,255,255,.22);
+    --acento:#5aa2ff; --sombra:0 18px 40px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--tinta);-webkit-text-size-adjust:100%;text-size-adjust:100%;background:#cfdcff;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.fondo{position:fixed;top:0;right:0;bottom:0;left:0;z-index:-1;overflow:hidden;background:linear-gradient(155deg,#dde8ff 0%,#efe6ff 48%,#ffe6d8 100%)}
+.fondo i{position:absolute;border-radius:50%;display:block}
+.fondo .b1{width:70vmax;height:70vmax;top:-25vmax;left:-20vmax;background:radial-gradient(circle,rgba(64,140,255,.55) 0%,rgba(64,140,255,0) 65%)}
+.fondo .b2{width:60vmax;height:60vmax;bottom:-22vmax;right:-18vmax;background:radial-gradient(circle,rgba(255,128,96,.5) 0%,rgba(255,128,96,0) 65%)}
+.fondo .b3{width:45vmax;height:45vmax;top:30%;right:10%;background:radial-gradient(circle,rgba(150,98,255,.38) 0%,rgba(150,98,255,0) 65%)}
+@media (prefers-color-scheme: dark){
+  body{background:#0b1222}
+  .fondo{background:linear-gradient(155deg,#0b1430 0%,#1a1236 50%,#2a1420 100%)}
+}
+.vidrio{background:var(--vidrio);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid var(--borde);box-shadow:inset 0 1px 0 var(--brillo),var(--sombra)}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .vidrio{background:rgba(255,255,255,.88)}
+  @media (prefers-color-scheme: dark){ .vidrio{background:rgba(24,32,52,.94)} }
+}
+.app{max-width:560px;margin:0 auto;padding:16px 16px 140px}
+.app.centro{min-height:100vh;display:flex;align-items:center;justify-content:center;padding-bottom:16px}
+.cabecera{border-radius:26px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.cabecera h1{font-size:28px;line-height:1.1;letter-spacing:-.02em;margin:0;font-weight:700}
+.cabecera p{margin:4px 0 0;color:var(--tinta-2);font-size:15px}
+.pildora{border-radius:999px;padding:7px 12px;font-size:14px;font-weight:600;background:var(--vidrio-fuerte);border:1px solid var(--borde);white-space:nowrap}
+.tarjeta{border-radius:30px;padding:16px;width:100%}
+.tarjeta h2{font-size:24px;letter-spacing:-.02em;margin:6px 4px 8px}
+.detalle{color:var(--tinta-2);font-size:16px;line-height:1.45;margin:0 4px 6px}
+.buscador{display:block;margin-bottom:10px}
+.buscador input{width:100%;font-size:16px;padding:13px 16px;border-radius:999px;border:1px solid var(--borde);background:var(--vidrio-fuerte);color:var(--tinta);outline:none;-webkit-appearance:none;appearance:none}
+.buscador input:focus{border-color:var(--acento);box-shadow:0 0 0 3px rgba(10,108,255,.22)}
+.lista{list-style:none;margin:0;padding:0;max-height:58vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.lista li{margin:0}
+.alumno{width:100%;display:flex;align-items:center;gap:12px;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid transparent;border-radius:20px;padding:10px 10px;cursor:pointer}
+.alumno:focus-visible{outline:3px solid var(--acento);outline-offset:1px}
+.alumno.activo{background:var(--vidrio-fuerte);border-color:var(--acento)}
+.ini{flex:0 0 42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff;background:linear-gradient(145deg,#4f8dff,#7a5cff)}
+.alumno.activo .ini{background:linear-gradient(145deg,#12a26a,#0a6cff)}
+.nom b{display:block;font-size:17px;font-weight:600}
+.nom small{display:block;font-size:14px;color:var(--tinta-2);margin-top:1px}
+.vacio{padding:18px 10px;color:var(--tinta-2);text-align:center}
+.barra{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:536px;margin:0 auto;border-radius:28px;padding:12px 12px 12px 18px;display:flex;align-items:center;gap:12px}
+.barra-txt{flex:1;min-width:0}
+.barra-txt span{display:block;font-size:13px;color:var(--tinta-2)}
+.barra-txt strong{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button.primario,.boton{font:inherit;font-size:16px;font-weight:600;color:#fff;background:var(--acento);border:0;border-radius:999px;padding:13px 18px;cursor:pointer;text-decoration:none;display:inline-block;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 20px rgba(10,108,255,.3)}
+button.primario:disabled{opacity:.6}
+.botones{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.oculto{display:none!important}
+.sello{width:72px;height:72px;margin:6px auto 4px}
+.sello svg{width:72px;height:72px}
+.sello circle{fill:none;stroke:var(--ok);stroke-width:3;opacity:.9}
+.sello path{fill:none;stroke:var(--ok);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:trazo .55s .15s ease-out forwards}
+.sello.aviso circle{stroke:var(--aviso)}
+.sello.aviso path{stroke:var(--aviso)}
+@keyframes trazo{to{stroke-dashoffset:0}}
+.resultado{text-align:center}
+.conteo{margin:18px auto 6px;display:flex;align-items:baseline;justify-content:center;gap:10px}
+.conteo .num{font-size:64px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.conteo .de{font-size:17px;color:var(--tinta-2);text-align:left;max-width:12em}
+.resultado h3{font-size:15px;font-weight:600;color:var(--tinta-2);margin:18px 0 10px}
+.chips{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chips li{border-radius:999px;padding:7px 12px;font-size:14px;font-weight:600;background:var(--vidrio-fuerte);border:1px solid var(--borde)}
+.chips li.hoy{background:var(--ok);color:#fff;border-color:transparent}
+.giro{width:34px;height:34px;margin:30px auto;border-radius:50%;border:3px solid var(--borde);border-top-color:var(--acento);animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.sello path{animation:none;stroke-dashoffset:0}.giro{animation-duration:2s}}
+
+/* Pantalla del profesor */
+.profe{display:flex;flex-wrap:wrap;gap:18px;padding:18px;max-width:1200px;margin:0 auto;align-items:flex-start}
+.panel-qr{flex:1 1 520px;border-radius:36px;padding:22px;text-align:center}
+.panel-qr h1{font-size:34px;letter-spacing:-.02em;margin:4px 0 2px}
+.panel-qr .detalle{text-align:center}
+.qr-marco{display:inline-block;background:#fff;border-radius:28px;padding:18px;margin:16px auto 12px;box-shadow:0 10px 30px rgba(20,30,60,.18)}
+.qr-marco img,.qr-marco canvas{display:block}
+.tiempo{height:6px;border-radius:999px;background:var(--vidrio-fuerte);overflow:hidden;max-width:420px;margin:4px auto 8px}
+.tiempo div{height:100%;width:100%;background:var(--acento);border-radius:999px}
+.panel-lista{flex:1 1 300px;border-radius:36px;padding:22px}
+.conteo-profe{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.conteo-profe .num{font-size:72px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.conteo-profe span:last-child{font-size:18px;color:var(--tinta-2)}
+.panel-lista h2{font-size:16px;color:var(--tinta-2);margin:18px 0 8px;font-weight:600}
+.nombres{list-style:none;margin:0;padding:0;max-height:38vh;overflow-y:auto}
+.nombres li{display:flex;justify-content:space-between;gap:10px;padding:8px 2px;border-bottom:1px solid var(--borde);font-size:16px}
+.nombres li small{color:var(--tinta-2);white-space:nowrap}
+.nombres li.alerta{color:var(--aviso);font-weight:600}
+.enlace{word-break:break-all;font-size:13px;color:var(--tinta-2)}
+</style>
+</head>
+<body>
+<div class="fondo" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+
+<main class="app">
+  <header class="cabecera vidrio">
+    <div><h1>Asistencia</h1><p id="sub"></p></div>
+    <div id="fecha" class="pildora"></div>
+  </header>
+  <section id="vista-carga" class="vidrio tarjeta"><div class="giro"></div></section>
+  <section id="vista-lista" class="vidrio tarjeta oculto">
+    <label class="buscador"><input id="q" type="search" placeholder="Busca tu nombre" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Busca tu nombre"></label>
+    <ul id="lista" class="lista"></ul>
+  </section>
+  <section id="vista-resultado" class="vidrio tarjeta resultado oculto" aria-live="polite"></section>
+</main>
+<div id="barra" class="barra vidrio oculto">
+  <div class="barra-txt"><span>Vas a registrar a</span><strong id="sel-nombre"></strong></div>
+  <button id="btn" class="primario" type="button">Registrar mi asistencia</button>
+</div>
+<script>
+var DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function $(id){return document.getElementById(id);}
+function aFecha(s){var p=String(s).split('-');return new Date(Number(p[0]),Number(p[1])-1,Number(p[2]));}
+function fechaLarga(s){var d=aFecha(s);return DIAS[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()];}
+function fechaCorta(s){var d=aFecha(s);return DIAS[d.getDay()].substring(0,3)+' '+d.getDate()+' '+MESES[d.getMonth()].substring(0,3);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function mostrar(el){el.className=el.className.replace(/\s*oculto/g,'');}
+function ocultar(el){if(el.className.indexOf('oculto')<0)el.className+=' oculto';}
+</script>
+<script>
+var sel=null, enviando=false;
+var dev=(function(){var k='asistencia_dispositivo',id=null,nuevo=false;
+  try{id=window.localStorage.getItem(k);}catch(e){}
+  if(!id){id='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);nuevo=true;try{window.localStorage.setItem(k,id);}catch(e){}}
+  return {id:id,nuevo:nuevo};})();
+function huella(){var n=window.navigator||{},s=window.screen||{};
+  var t=[n.userAgent,n.language,n.platform,n.hardwareConcurrency,n.maxTouchPoints,s.width+'x'+s.height,s.colorDepth,window.devicePixelRatio,(new Date()).getTimezoneOffset()].join('|');
+  var h=5381;for(var i=0;i<t.length;i++){h=((h<<5)+h+t.charCodeAt(i))|0;}return 'h'+(h>>>0).toString(36);}
+function sinAcentos(s){s=String(s||'').toLowerCase();try{s=s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');}catch(e){}return s;}
+function primerNombre(s){return String(s).split(' ')[0];}
+
+function pintarLista(){
+  var q=sinAcentos($('q').value).replace(/^\s+|\s+$/g,''),ul=$('lista'),n=0;ul.innerHTML='';
+  for(var i=0;i<D.alumnos.length;i++){
+    var a=D.alumnos[i];
+    if(q&&sinAcentos(a.nombre+' '+a.apellidos).indexOf(q)<0)continue;
+    n++;
+    var li=document.createElement('li'),b=document.createElement('button');
+    b.type='button';b.className='alumno'+(sel&&sel.id===a.id?' activo':'');b.setAttribute('data-i',i);
+    var ini=document.createElement('span');ini.className='ini';ini.textContent=a.nombre.charAt(0)+a.apellidos.charAt(0);
+    var t=document.createElement('span');t.className='nom';
+    var bb=document.createElement('b');bb.textContent=a.nombre;
+    var sm=document.createElement('small');sm.textContent=a.apellidos;
+    t.appendChild(bb);t.appendChild(sm);b.appendChild(ini);b.appendChild(t);
+    b.onclick=elegir;li.appendChild(b);ul.appendChild(li);
+  }
+  if(!n){var v=document.createElement('li');v.className='vacio';v.textContent='No hay nombres que coincidan. Prueba con tu apellido.';ul.appendChild(v);}
+}
+function elegir(){
+  sel=D.alumnos[Number(this.getAttribute('data-i'))];
+  $('sel-nombre').textContent=sel.nombre+' '+sel.apellidos;
+  mostrar($('barra'));pintarLista();
+}
+function enviar(){
+  if(!sel||enviando)return;enviando=true;
+  var btn=$('btn');btn.disabled=true;btn.textContent='Registrando…';
+  llamar({accion:'registrar',g:D.g,ticket:D.ticket,id:sel.id,dev:dev.id,nuevo:dev.nuevo,huella:huella()},
+    function(r){enviando=false;btn.disabled=false;btn.textContent='Registrar mi asistencia';resultado(r);},
+    function(){enviando=false;btn.disabled=false;btn.textContent='Registrar mi asistencia';
+      aviso('No se pudo registrar','Revisa tu conexión a internet e inténtalo otra vez.',true);});
+}
+function resultado(r){
+  if(r&&r.ok){dev.nuevo=false;try{window.localStorage.setItem('asistencia_ultimo_'+D.g,r.fecha+'|'+r.id);}catch(e){}pintarExito(r);return;}
+  var m=r&&r.motivo;
+  if(m==='caducado')aviso('El tiempo para registrarte terminó','Vuelve a escanear el código que está proyectado en el salón.',false);
+  else if(m==='dispositivo')aviso('Este equipo ya registró a otra persona hoy','Desde aquí ya se registró la asistencia de '+r.nombre+'. Cada equipo registra a una sola persona por día.',false);
+  else if(m==='yaRegistrado')aviso('Ya hay un registro tuyo hoy','La asistencia de '+r.nombre+' ya se registró hoy desde otro equipo. Si no fuiste tú, avísale a tu profesor.',false);
+  else aviso('No encontramos tu nombre','Vuelve a escanear el código e inténtalo de nuevo.',false);
+}
+function pintarExito(r){
+  var h=r.historial,chips='';
+  for(var i=h.fechas.length-1;i>=0;i--)chips+='<li'+(h.fechas[i]===D.hoy?' class="hoy"':'')+'>'+esc(fechaCorta(h.fechas[i]))+'</li>';
+  $('vista-resultado').innerHTML=
+    '<div class="sello"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg></div>'+
+    '<h2>'+(r.ya?'Ya tienes tu asistencia de hoy':'Asistencia registrada')+'</h2>'+
+    '<p class="detalle">'+esc(primerNombre(r.nombre))+', tu asistencia del '+esc(fechaLarga(r.fecha))+' quedó guardada a las '+esc(r.hora)+'.</p>'+
+    '<div class="conteo"><span class="num">'+h.asistidas+'</span><span class="de">de '+h.total+(h.total===1?' sesión':' sesiones')+' con asistencia</span></div>'+
+    '<h3>Tus fechas con asistencia</h3><ul class="chips">'+chips+'</ul>';
+  ocultar($('vista-carga'));ocultar($('vista-lista'));ocultar($('barra'));mostrar($('vista-resultado'));
+}
+function aviso(titulo,texto,reintentar){
+  $('vista-resultado').innerHTML=
+    '<div class="sello aviso"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M26 15v14M26 36v1"/></svg></div>'+
+    '<h2>'+esc(titulo)+'</h2><p class="detalle">'+esc(texto)+'</p>'+
+    (reintentar?'<div class="botones"><button class="primario" type="button" id="otra">Intentar otra vez</button></div>':'');
+  ocultar($('vista-carga'));ocultar($('vista-lista'));ocultar($('barra'));mostrar($('vista-resultado'));
+  if(reintentar)$('otra').onclick=function(){ocultar($('vista-resultado'));mostrar($('vista-lista'));if(sel)mostrar($('barra'));};
+}
+function abrirLista(){
+  if(!D.valido){aviso('Este código ya no es válido',D.rot>0?'El código del salón cambia cada pocos segundos. Escanéalo otra vez.':'Escanea el código de hoy que está proyectado en el salón.',false);return;}
+  ocultar($('vista-carga'));mostrar($('vista-lista'));pintarLista();
+}
+function iniciar(){
+  $('sub').textContent=D.grupoNombre;$('fecha').textContent=fechaCorta(D.hoy);
+  $('q').oninput=pintarLista;$('q').onkeyup=pintarLista;$('btn').onclick=enviar;
+  var ult=null;try{ult=window.localStorage.getItem('asistencia_ultimo_'+D.g);}catch(e){}
+  if(ult){var p=ult.split('|');
+    if(p[0]===D.hoy){
+      llamar({accion:'consultar',g:D.g,id:p[1],dev:dev.id},function(r){if(r&&r.ok)pintarExito(r);else abrirLista();},abrirLista);
+      return;}}
+  abrirLista();
+}
+</script>
+<script>
+var API='https://script.google.com/macros/s/AKfycbwRjfSK8QRQUH_DrrQ3lSnXyGI6JsN8xL-XN91TVblqgarJa5AwLn9h-QqnersApxOx/exec';
+var D=null;
+function llamar(datos,ok,falla){
+  var x=new XMLHttpRequest();
+  x.open('POST',API,true);
+  x.setRequestHeader('Content-Type','text/plain;charset=utf-8');
+  x.timeout=30000;
+  x.onreadystatechange=function(){if(x.readyState!==4)return;
+    if(x.status===200){var r=null;try{r=JSON.parse(x.responseText);}catch(e){}if(r){ok(r);return;}}
+    falla();};
+  x.ontimeout=function(){};
+  x.send(JSON.stringify(datos));
+}
+function param(n){var m=new RegExp('[?&]'+n+'=([^&#]*)').exec(window.location.search);return m?decodeURIComponent(m[1].replace(/\+/g,' ')):'';}
+function soloMensaje(titulo,texto){
+  $('sub').textContent='';ocultar($('vista-carga'));
+  $('vista-resultado').innerHTML='<h2>'+esc(titulo)+'</h2><p class="detalle">'+esc(texto)+'</p>';
+  mostrar($('vista-resultado'));
+}
+(function cargar(){
+  var g=param('g').toUpperCase(),t=param('t');
+  if(!g){soloMensaje('Escanea el código del salón','Para registrar tu asistencia, escanea con la cámara el código que está proyectado en clase.');return;}
+  var x=new XMLHttpRequest();
+  x.open('GET',API+'?api=inicio&g='+encodeURIComponent(g)+'&t='+encodeURIComponent(t),true);
+  x.timeout=30000;
+  x.onreadystatechange=function(){if(x.readyState!==4)return;
+    var r=null;if(x.status===200){try{r=JSON.parse(x.responseText);}catch(e){}}
+    if(!r){soloMensaje('Sin conexión','No pudimos cargar la lista. Revisa tu internet y vuelve a escanear el código.');return;}
+    if(!r.ok){soloMensaje('Grupo no encontrado','Este enlace no corresponde a ningún grupo. Escanea el código que está proyectado en el salón.');return;}
+    D=r;iniciar();
+    try{if(window.history&&history.replaceState)history.replaceState(null,'',window.location.pathname);}catch(e){}
+  };
+  x.send();
+})();
+</script>
+</body>
+</html>
