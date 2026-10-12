@@ -111,6 +111,12 @@ button.primario:disabled{opacity:.6}
 .nombres li small{color:var(--tinta-2);white-space:nowrap}
 .nombres li.alerta{color:var(--aviso);font-weight:600}
 .enlace{word-break:break-all;font-size:13px;color:var(--tinta-2)}
+.botones-fila{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+button.terminar{background:#d93a2b;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 20px rgba(217,58,43,.28)}
+.cierre-caja{padding:26px 10px 10px}
+.cierre-caja .grande{font-size:64px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.boton.sec{background:var(--vidrio-fuerte);color:var(--tinta);border:1px solid var(--borde);box-shadow:none}
+.pie-equipo{text-align:center;font-size:11px;color:var(--tinta-2);opacity:.7;margin:6px 0 18px;position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -145,10 +151,22 @@ function ocultar(el){if(el.className.indexOf('oculto')<0)el.className+=' oculto'
 </script>
 <script>
 var sel=null, enviando=false;
-var dev=(function(){var k='asistencia_dispositivo',id=null,nuevo=false;
-  try{id=window.localStorage.getItem(k);}catch(e){}
-  if(!id){id='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);nuevo=true;try{window.localStorage.setItem(k,id);}catch(e){}}
-  return {id:id,nuevo:nuevo};})();
+var dev=(function(){var k='asistencia_dispositivo',id=null,nuevo=false,origen='';
+  function ck(){try{var m=document.cookie.match(/(?:^|;\s*)asis_dev=([^;]+)/);return m?decodeURIComponent(m[1]):null;}catch(e){return null;}}
+  try{id=window.localStorage.getItem(k);if(id)origen='memoria';}catch(e){}
+  if(!id){id=ck();if(id)origen='cookie';}
+  if(!id){id='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);nuevo=true;origen='nuevo';}
+  try{window.localStorage.setItem(k,id);}catch(e){}
+  try{document.cookie='asis_dev='+encodeURIComponent(id)+'; max-age=34560000; path=/; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'');}catch(e){}
+  var guarda=false;try{guarda=window.localStorage.getItem(k)===id;}catch(e){}
+  if(!guarda)guarda=ck()===id;
+  return {id:id,nuevo:nuevo,origen:origen,guarda:guarda};})();
+function navegador(){var u=navigator.userAgent||'';
+  var b=/CriOS/.test(u)?'Chrome iOS':/FxiOS/.test(u)?'Firefox iOS':/EdgiOS/.test(u)?'Edge iOS':/GSA\//.test(u)?'App de Google':/Instagram/.test(u)?'Instagram':/FBAN|FBAV/.test(u)?'Facebook':
+    /WhatsApp/.test(u)?'WhatsApp':/SamsungBrowser/.test(u)?'Samsung Internet':/Android/.test(u)?(/; wv\)/.test(u)?'Navegador interno Android':/Chrome/.test(u)?'Chrome Android':'Android'):
+    /(iPhone|iPad|Macintosh)/.test(u)&&/Version\/[\d.]+.*Safari/.test(u)?'Safari':/(iPhone|iPad)/.test(u)?'Navegador interno iOS':/Chrome/.test(u)?'Chrome':/Firefox/.test(u)?'Firefox':'Otro';
+  var v=/OS (\d+)_/.exec(u);return b+(v&&/(iPhone|iPad)/.test(u)?' · iOS '+v[1]:'');}
+function navTxt(){return navegador()+' · '+(dev.origen==='nuevo'?'equipo nuevo':'equipo recordado ('+dev.origen+')')+(dev.guarda?'':' · NO GUARDA');}
 function huella(){var n=window.navigator||{},s=window.screen||{};
   var t=[n.userAgent,n.language,n.platform,n.hardwareConcurrency,n.maxTouchPoints,s.width+'x'+s.height,s.colorDepth,window.devicePixelRatio,(new Date()).getTimezoneOffset()].join('|');
   var h=5381;for(var i=0;i<t.length;i++){h=((h<<5)+h+t.charCodeAt(i))|0;}return 'h'+(h>>>0).toString(36);}
@@ -180,7 +198,7 @@ function elegir(){
 function enviar(){
   if(!sel||enviando)return;enviando=true;
   var btn=$('btn');btn.disabled=true;btn.textContent='Registrando…';
-  llamar({accion:'registrar',g:D.g,ticket:D.ticket,id:sel.id,dev:dev.id,nuevo:dev.nuevo,huella:huella()},
+  llamar({accion:'registrar',g:D.g,ticket:D.ticket,id:sel.id,dev:dev.id,nuevo:dev.nuevo,huella:huella(),nav:navTxt()},
     function(r){enviando=false;btn.disabled=false;btn.textContent='Registrar mi asistencia';resultado(r);},
     function(){enviando=false;btn.disabled=false;btn.textContent='Registrar mi asistencia';
       aviso('No se pudo registrar','Revisa tu conexión a internet e inténtalo otra vez.',true);});
@@ -213,10 +231,12 @@ function aviso(titulo,texto,reintentar){
   if(reintentar)$('otra').onclick=function(){ocultar($('vista-resultado'));mostrar($('vista-lista'));if(sel)mostrar($('barra'));};
 }
 function abrirLista(){
+  if(!dev.guarda){aviso('Abre esta página en tu navegador normal','Tu navegador no permite guardar datos (por ejemplo, en modo privado o dentro de otra app). Abre el enlace en Safari o Chrome normal y vuelve a escanear el código.',false);return;}
   if(!D.valido){aviso('Este código ya no es válido',D.rot>0?'El código del salón cambia cada pocos segundos. Escanéalo otra vez.':'Escanea el código de hoy que está proyectado en el salón.',false);return;}
   ocultar($('vista-carga'));mostrar($('vista-lista'));pintarLista();
 }
 function iniciar(){
+  try{var pie=document.createElement('p');pie.className='pie-equipo';pie.textContent='Equipo '+dev.id.slice(-4).toUpperCase()+' · '+navegador();document.body.appendChild(pie);}catch(e){}
   $('sub').textContent=D.grupoNombre;$('fecha').textContent=fechaCorta(D.hoy);
   $('q').oninput=pintarLista;$('q').onkeyup=pintarLista;$('btn').onclick=enviar;
   var ult=null;try{ult=window.localStorage.getItem('asistencia_ultimo_'+D.g);}catch(e){}
