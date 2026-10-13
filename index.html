@@ -138,7 +138,7 @@ button.terminar{background:#d93a2b;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)
 </main>
 <div id="barra" class="barra vidrio oculto">
   <div class="barra-txt"><span>Vas a registrar a</span><strong id="sel-nombre"></strong></div>
-  <button id="btn" class="primario" type="button">Registrar mi asistencia</button>
+  <button id="btn" class="primario" type="button">Registrar mi sesión</button>
 </div>
 <script>
 var DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
@@ -201,16 +201,16 @@ function enviar(){
   if(!sel||enviando)return;enviando=true;
   var btn=$('btn');btn.disabled=true;btn.textContent='Registrando…';
   llamar({accion:'registrar',g:D.g,ticket:D.ticket,id:sel.id,dev:dev.id,nuevo:dev.nuevo,huella:huella(),nav:navTxt()},
-    function(r){enviando=false;btn.disabled=false;btn.textContent='Registrar mi asistencia';resultado(r);},
-    function(){enviando=false;btn.disabled=false;btn.textContent='Registrar mi asistencia';
+    function(r){enviando=false;btn.disabled=false;btn.textContent='Registrar mi sesión';resultado(r);},
+    function(){enviando=false;btn.disabled=false;btn.textContent='Registrar mi sesión';
       aviso('No se pudo registrar','Revisa tu conexión a internet e inténtalo otra vez.',true);});
 }
 function resultado(r){
   if(r&&r.ok){dev.nuevo=false;try{window.localStorage.setItem('asistencia_ultimo_'+D.g,r.fecha+'|'+r.id);}catch(e){}pintarExito(r);return;}
   var m=r&&r.motivo;
   if(m==='caducado')aviso('El tiempo para registrarte terminó','Vuelve a escanear el código que está proyectado en el salón.',false);
-  else if(m==='dispositivo')aviso('Este equipo ya registró a otra persona hoy','Desde aquí ya se registró la asistencia de '+r.nombre+'. Cada equipo registra a una sola persona por día.',false);
-  else if(m==='yaRegistrado')aviso('Ya hay un registro tuyo hoy','La asistencia de '+r.nombre+' ya se registró hoy desde otro equipo. Si no fuiste tú, avísale a tu profesor.',false);
+  else if(m==='dispositivo')aviso('Este equipo ya registró a otra persona hoy','Desde aquí ya se registró la sesión de '+r.nombre+'. Cada equipo registra a una sola persona por día.',false);
+  else if(m==='yaRegistrado')aviso('Ya hay un registro tuyo hoy','El registro de sesión de '+r.nombre+' ya se hizo hoy desde otro equipo. Si no fuiste tú, avísale a tu profesor.',false);
   else aviso('No encontramos tu nombre','Vuelve a escanear el código e inténtalo de nuevo.',false);
 }
 function pintarExito(r){
@@ -218,10 +218,10 @@ function pintarExito(r){
   for(var i=h.fechas.length-1;i>=0;i--)chips+='<li'+(h.fechas[i]===D.hoy?' class="hoy"':'')+'>'+esc(fechaCorta(h.fechas[i]))+'</li>';
   $('vista-resultado').innerHTML=
     '<div class="sello"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg></div>'+
-    '<h2>'+(r.ya?'Ya tienes tu asistencia de hoy':'Asistencia registrada')+'</h2>'+
-    '<p class="detalle">'+esc(primerNombre(r.nombre))+', tu asistencia del '+esc(fechaLarga(r.fecha))+' quedó guardada a las '+esc(r.hora)+'.</p>'+
-    '<div class="conteo"><span class="num">'+h.asistidas+'</span><span class="de">de '+h.total+(h.total===1?' sesión':' sesiones')+' con asistencia</span></div>'+
-    '<h3>Tus fechas con asistencia</h3><ul class="chips">'+chips+'</ul>';
+    '<h2>'+(r.ya?'Ya tienes tu registro de hoy':'Registro de sesión guardado')+'</h2>'+
+    '<p class="detalle">'+esc(primerNombre(r.nombre))+', tu registro de sesión del '+esc(fechaLarga(r.fecha))+' quedó guardado a las '+esc(r.hora)+'.</p>'+
+    '<div class="conteo"><span class="num">'+h.asistidas+'</span><span class="de">de '+h.total+(h.total===1?' sesión registrada':' sesiones registradas')+'</span></div>'+
+    '<h3>Tus fechas registradas</h3><ul class="chips">'+chips+'</ul>';
   ocultar($('vista-carga'));ocultar($('vista-lista'));ocultar($('barra'));mostrar($('vista-resultado'));
 }
 function aviso(titulo,texto,reintentar){
@@ -271,7 +271,7 @@ function soloMensaje(titulo,texto){
 }
 (function cargar(){
   var g=param('g').toUpperCase(),t=param('t');
-  if(!g){soloMensaje('Escanea el código del salón','Para registrar tu asistencia, escanea con la cámara el código que está proyectado en clase.');return;}
+  if(!g){soloMensaje('Escanea el código del salón','Para hacer tu registro de sesión, escanea con la cámara el código que está proyectado en clase.');return;}
   var x=new XMLHttpRequest();
   x.open('GET',API+'?api=inicio&g='+encodeURIComponent(g)+'&t='+encodeURIComponent(t),true);
   x.timeout=30000;
