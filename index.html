@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#dde8ff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b1430" media="(prefers-color-scheme: dark)">
-<title>Asistencia</title>
+<title>Registro de sesión</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%85%3C/text%3E%3C/svg%3E">
 <style>
 :root{
@@ -116,6 +116,7 @@ button.terminar{background:#d93a2b;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)
 .cierre-caja{padding:26px 10px 10px}
 .cierre-caja .grande{font-size:64px;font-weight:700;letter-spacing:-.04em;line-height:1}
 .boton.sec{background:var(--vidrio-fuerte);color:var(--tinta);border:1px solid var(--borde);box-shadow:none}
+.nota-legal{text-align:center;font-size:13px;line-height:1.45;color:var(--tinta-2);margin:16px 12px 0}
 .pie-equipo{text-align:center;font-size:11px;color:var(--tinta-2);opacity:.7;margin:6px 0 18px;position:relative;z-index:1}
 </style>
 </head>
@@ -124,7 +125,7 @@ button.terminar{background:#d93a2b;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)
 
 <main class="app">
   <header class="cabecera vidrio">
-    <div><h1>Asistencia</h1><p id="sub"></p></div>
+    <div><h1>Registro de sesión</h1><p id="sub"></p></div>
     <div id="fecha" class="pildora"></div>
   </header>
   <section id="vista-carga" class="vidrio tarjeta"><div class="giro"></div></section>
@@ -133,6 +134,7 @@ button.terminar{background:#d93a2b;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)
     <ul id="lista" class="lista"></ul>
   </section>
   <section id="vista-resultado" class="vidrio tarjeta resultado oculto" aria-live="polite"></section>
+  <p class="nota-legal">Este registro de sesión no es un registro de asistencia y es solo para control estadístico del profesor.</p>
 </main>
 <div id="barra" class="barra vidrio oculto">
   <div class="barra-txt"><span>Vas a registrar a</span><strong id="sel-nombre"></strong></div>
